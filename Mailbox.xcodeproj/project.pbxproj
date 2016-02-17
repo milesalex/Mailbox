@@ -14,6 +14,8 @@
 		DA7668211C7389150065D782 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA76681F1C7389150065D782 /* LaunchScreen.storyboard */; };
 		DA76682C1C7389150065D782 /* MailboxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA76682B1C7389150065D782 /* MailboxTests.swift */; };
 		DA7668371C7389150065D782 /* MailboxUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7668361C7389150065D782 /* MailboxUITests.swift */; };
+		DA7668451C7389E10065D782 /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7668441C7389E10065D782 /* MailboxViewController.swift */; };
+		DA7668481C73FC1D0065D782 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7668471C73FC1D0065D782 /* Common.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		DA7668321C7389150065D782 /* MailboxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MailboxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA7668361C7389150065D782 /* MailboxUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxUITests.swift; sourceTree = "<group>"; };
 		DA7668381C7389150065D782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA7668441C7389E10065D782 /* MailboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewController.swift; sourceTree = "<group>"; };
+		DA7668471C73FC1D0065D782 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = ../Common.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +101,14 @@
 		DA7668151C7389150065D782 /* Mailbox */ = {
 			isa = PBXGroup;
 			children = (
+				DA7668461C7389E80065D782 /* ViewControllers */,
 				DA7668161C7389150065D782 /* AppDelegate.swift */,
 				DA7668181C7389150065D782 /* ViewController.swift */,
 				DA76681A1C7389150065D782 /* Main.storyboard */,
 				DA76681D1C7389150065D782 /* Assets.xcassets */,
 				DA76681F1C7389150065D782 /* LaunchScreen.storyboard */,
 				DA7668221C7389150065D782 /* Info.plist */,
+				DA7668471C73FC1D0065D782 /* Common.swift */,
 			);
 			path = Mailbox;
 			sourceTree = "<group>";
@@ -123,6 +129,14 @@
 				DA7668381C7389150065D782 /* Info.plist */,
 			);
 			path = MailboxUITests;
+			sourceTree = "<group>";
+		};
+		DA7668461C7389E80065D782 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				DA7668441C7389E10065D782 /* MailboxViewController.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,8 +270,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA7668481C73FC1D0065D782 /* Common.swift in Sources */,
 				DA7668191C7389150065D782 /* ViewController.swift in Sources */,
 				DA7668171C7389150065D782 /* AppDelegate.swift in Sources */,
+				DA7668451C7389E10065D782 /* MailboxViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +498,7 @@
 				DA76683D1C7389150065D782 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DA76683E1C7389150065D782 /* Build configuration list for PBXNativeTarget "MailboxTests" */ = {
 			isa = XCConfigurationList;
@@ -490,6 +507,7 @@
 				DA7668401C7389150065D782 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DA7668411C7389150065D782 /* Build configuration list for PBXNativeTarget "MailboxUITests" */ = {
 			isa = XCConfigurationList;
@@ -498,6 +516,7 @@
 				DA7668431C7389150065D782 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
