@@ -18,7 +18,9 @@ class MailboxViewController: UIViewController {
     @IBOutlet weak var leftIcon: UIImageView!
     @IBOutlet weak var rightIcon: UIImageView!
     @IBOutlet weak var feedView: UIImageView!
-
+    
+    var rescheduleImageView: UIImageView?
+    var listImageView: UIImageView?
     
     let mailboxGreen = UIColor(hue: 120/360, saturation: 54/100, brightness: 85/100, alpha: 1.0) /* #62d962 */
     let mailboxLightGray = UIColor(hue: 0.4722, saturation: 0, brightness: 0.92, alpha: 1.0)
@@ -95,17 +97,17 @@ class MailboxViewController: UIViewController {
                 if translation.x <= 60 {
                     self.cancelMessageSlideOut()
                 } else if translation.x >= 61 && translation.x <= 260 {
-                    self.completeMessageSlideOut(Direction.Right)
+                    self.completeMessageSlideOut(Direction.Right, showScreen: nil)
                 } else if translation.x >= 261 {
-                    self.completeMessageSlideOut(Direction.Right)
+                    self.completeMessageSlideOut(Direction.Right, showScreen: nil)
                 }
             } else {
                 if translation.x > -60 {
                     self.cancelMessageSlideOut()
                 } else if translation.x <= -60 && translation.x >= -260 {
-                    self.completeMessageSlideOut(Direction.Left)
+                    self.completeMessageSlideOut(Direction.Left, showScreen: "reschedule")
                 } else if translation.x <= -261 {
-                    self.completeMessageSlideOut(Direction.Left)
+                    self.completeMessageSlideOut(Direction.Left, showScreen: "list")
                 }
             }
         }
@@ -117,7 +119,7 @@ class MailboxViewController: UIViewController {
         })
     }
     
-    func completeMessageSlideOut(direction: Direction) {
+    func completeMessageSlideOut(direction: Direction, showScreen: String?) {
         if direction == Direction.Right {
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.messageImage.frame.origin.x = self.messageView.frame.size.width * 1.2
@@ -130,7 +132,8 @@ class MailboxViewController: UIViewController {
                 self.messageImage.frame.origin.x = -self.messageView.frame.size.width * 1.2
                 self.rightIcon.frame.origin.x = self.messageImage.frame.origin.x + 320 + 15
             }, completion: { finished in
-                    self.hideMessageView()
+//                    self.hideMessageView()
+                
             })
         }
     }
@@ -165,13 +168,23 @@ class MailboxViewController: UIViewController {
         leftIconPosition = CGPoint(x: 30, y: messageView.frame.size.height / 2)
         leftIcon.center = leftIconPosition
         leftIcon.alpha = 0
-        
         leftIcon.image = UIImage(named: "archive_icon")
-        
         
         rightIconPosition = CGPoint(x: 320 - 30, y: messageView.frame.size.height / 2)
         rightIcon.center = rightIconPosition
         rightIcon.alpha = 0
+        
+        let listImage: UIImage = UIImage(named: "list")!
+        listImageView = UIImageView(image: listImage)
+        listImageView!.frame = CGRect(x: 0, y: 0, width: 320, height: 568)
+        self.view.addSubview(listImageView!)
+        listImageView?.alpha = 0
+        
+        let rescheduleImage: UIImage = UIImage(named: "reschedule")!
+        rescheduleImageView = UIImageView(image: rescheduleImage)
+        rescheduleImageView!.frame = CGRect(x: 0, y: 0, width: 320, height: 568)
+        self.view.addSubview(rescheduleImageView!)
+        rescheduleImageView?.alpha = 0
         
     }
 
