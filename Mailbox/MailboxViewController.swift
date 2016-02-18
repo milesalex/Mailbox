@@ -30,6 +30,8 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
     var leftIconPosition: CGPoint!
     var rightIconPosition: CGPoint!
     
+    var feedViewOriginalPositionY: CGFloat!
+    
     enum Direction {
         case Left, Right
     }
@@ -38,10 +40,6 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
         return true
     }
 
-    
-    func onRescheduleTap(tapGestureRecognizerForReschedule: UITapGestureRecognizer){
-        print("hit")
-    }
     
     func onMessagePan(panGestureRecognizer: UIPanGestureRecognizer){
         // Absolute x,y coordinates in parent view
@@ -54,12 +52,14 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
         if panGestureRecognizer.state == UIGestureRecognizerState.Began {
             initialCenter = messageImage.center
             self.messageView.backgroundColor = self.mailboxLightGray
+            
         } else if panGestureRecognizer.state == UIGestureRecognizerState.Changed {
-            // Move message cell
+            // Move message cel
             messageImage.center = CGPoint(x: translation.x + initialCenter.x, y: initialCenter.y)
             
             if translation.x > 0 {
                 if translation.x <= 60 {
+                    self.leftIcon.center = CGPoint(x: 30, y: messageView.frame.size.height / 2)
                     UIView.animateWithDuration(0.05, animations: { () -> Void in
                         self.messageView.backgroundColor = self.mailboxLightGray
                         self.leftIcon.image = UIImage(named: "archive_icon.png")
@@ -133,7 +133,8 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.messageImage.frame.origin.x = self.messageView.frame.size.width * 1.2
                 self.leftIcon.frame.origin.x = self.messageImage.frame.origin.x - 40
             }, completion: { finished in
-                    self.hideMessageView()
+                self.leftIconPosition = CGPoint(x: 30, y: self.messageView.frame.size.height / 2)
+                self.hideMessageView()
             })
         } else if direction == Direction.Left {
             // For list and reschedule
@@ -142,6 +143,8 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.rightIcon.frame.origin.x = self.messageImage.frame.origin.x + 320 + 15
             }, completion: { finished in
                 if showScreen == "reschedule" {
+                    
+                    
                     UIView.animateWithDuration(0.3, animations: { () -> Void in
                         self.rescheduleImageView?.alpha = 1
                     })
@@ -158,7 +161,7 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func hideMessageView() {
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.feedView.frame.origin.y -= 86
+            self.feedView.frame.origin.y = self.feedViewOriginalPositionY - 86
         }, completion: { finished in
             self.showMessageView()
         })
@@ -167,23 +170,25 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
     func showMessageView() {
         messageImage.center = CGPoint(x: messageView.frame.width / 2, y: messageView.frame.height / 2)
         UIView.animateWithDuration(0.2, delay: 0.5, options: UIViewAnimationOptions.AllowUserInteraction, animations: { () -> Void in
-            self.feedView.frame.origin.y += 86
+            self.feedView.frame.origin.y = self.feedViewOriginalPositionY
         }, completion: {finished in
             
         })
         
     }
     
+    func onRescheduleTap(tapGestureRecognizerForReschedule: UITapGestureRecognizer){
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.rescheduleImageView?.alpha = 0
+        }, completion: { finished in
+            self.hideMessageView()
+        })
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.contentSize = CGSize(width: 320, height: 1245)
-        
-        let tapGestureRecognizerForReschedule = UITapGestureRecognizer(target: self, action: "onRescheduleTap:")
-        tapGestureRecognizerForReschedule.delegate = self
-        rescheduleImageView?.userInteractionEnabled = true
-        rescheduleImageView?.addGestureRecognizer(tapGestureRecognizerForReschedule)
-        
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "onMessagePan:")
         panGestureRecognizer.delegate = self
@@ -210,6 +215,19 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
         rescheduleImageView!.frame = CGRect(x: 0, y: 0, width: 320, height: 568)
         self.view.addSubview(rescheduleImageView!)
         rescheduleImageView?.alpha = 0
+        
+        let tapGestureRecognizerForReschedule = UITapGestureRecognizer(target: self, action: "onRescheduleTap:")
+        tapGestureRecognizerForReschedule.delegate = self
+        self.rescheduleImageView?.userInteractionEnabled = true
+        self.rescheduleImageView?.addGestureRecognizer(tapGestureRecognizerForReschedule)
+        
+        let tapGestureRecognizerForList = UITapGestureRecognizer(target: self, action: "onListTap:")
+        tapGestureRecognizerForList.delegate = self
+        self.listImageView?.userInteractionEnabled = true
+        self.listImageView?.addGestureRecognizer(tapGestureRecognizerForList)
+        
+        feedViewOriginalPositionY = feedView.frame.origin.y
+        print(feedViewOriginalPositionY)
         
     }
 
