@@ -8,9 +8,7 @@
 
 import UIKit
 
-
-
-class MailboxViewController: UIViewController {
+class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var messageView: UIView!
@@ -34,6 +32,15 @@ class MailboxViewController: UIViewController {
     
     enum Direction {
         case Left, Right
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
+    
+    func onRescheduleTap(tapGestureRecognizerForReschedule: UITapGestureRecognizer){
+        print("hit")
     }
     
     func onMessagePan(panGestureRecognizer: UIPanGestureRecognizer){
@@ -121,6 +128,7 @@ class MailboxViewController: UIViewController {
     
     func completeMessageSlideOut(direction: Direction, showScreen: String?) {
         if direction == Direction.Right {
+            // For archive and delete
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.messageImage.frame.origin.x = self.messageView.frame.size.width * 1.2
                 self.leftIcon.frame.origin.x = self.messageImage.frame.origin.x - 40
@@ -128,10 +136,20 @@ class MailboxViewController: UIViewController {
                     self.hideMessageView()
             })
         } else if direction == Direction.Left {
+            // For list and reschedule
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.messageImage.frame.origin.x = -self.messageView.frame.size.width * 1.2
                 self.rightIcon.frame.origin.x = self.messageImage.frame.origin.x + 320 + 15
             }, completion: { finished in
+                if showScreen == "reschedule" {
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        self.rescheduleImageView?.alpha = 1
+                    })
+                } else if showScreen == "list" {
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        self.listImageView?.alpha = 1
+                    })
+                }
 //                    self.hideMessageView()
                 
             })
@@ -160,8 +178,14 @@ class MailboxViewController: UIViewController {
         super.viewDidLoad()
         scrollView.contentSize = CGSize(width: 320, height: 1245)
         
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "onMessagePan:")
+        let tapGestureRecognizerForReschedule = UITapGestureRecognizer(target: self, action: "onRescheduleTap:")
+        tapGestureRecognizerForReschedule.delegate = self
+        rescheduleImageView?.userInteractionEnabled = true
+        rescheduleImageView?.addGestureRecognizer(tapGestureRecognizerForReschedule)
         
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "onMessagePan:")
+        panGestureRecognizer.delegate = self
         messageView.addGestureRecognizer(panGestureRecognizer)
         messageView.backgroundColor = mailboxLightGray
         
@@ -193,15 +217,5 @@ class MailboxViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
