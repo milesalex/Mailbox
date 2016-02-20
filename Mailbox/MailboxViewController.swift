@@ -80,6 +80,7 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
             } else {
                 if translation.x > -60 {
+                    self.rightIcon.center = rightIconPosition
                     UIView.animateWithDuration(0.05, animations: { () -> Void in
                         self.messageView.backgroundColor = self.mailboxLightGray
                         self.rightIcon.image = UIImage(named: "later_icon.png")
@@ -182,6 +183,14 @@ class MailboxViewController: UIViewController, UIGestureRecognizerDelegate {
             self.rescheduleImageView?.alpha = 0
         }, completion: { finished in
             self.hideMessageView()
+        })
+    }
+    
+    func onListTap(tapGestureRecognizerForReschedule: UITapGestureRecognizer){
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.listImageView?.alpha = 0
+            }, completion: { finished in
+                self.hideMessageView()
         })
     }
     
