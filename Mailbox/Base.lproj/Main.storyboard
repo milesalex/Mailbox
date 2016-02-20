@@ -53,11 +53,6 @@
                                         <rect key="frame" x="0.0" y="37" width="320" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </imageView>
-                                    <view contentMode="scaleToFill" id="dUe-qh-sxI">
-                                        <rect key="frame" x="45" y="122" width="240" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
                                 </subviews>
                             </scrollView>
                         </subviews>
